@@ -1,0 +1,13 @@
+name: pls
+version: "0.1"
+author: Adi
+about: Pretty ls
+args:
+    - PATH:
+        help: Which directory/path to list
+        required: true
+        index: 1
+    - verbose:
+        short: v
+        multiple: true
+        help: Sets the level of verbosity
