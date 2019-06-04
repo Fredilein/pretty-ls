@@ -6,6 +6,7 @@ use std::path::{Path};
 use clap::App;
 
 mod core;
+mod entry;
 
 
 fn main() -> std::io::Result<()> {
