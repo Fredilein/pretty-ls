@@ -1,17 +1,14 @@
-use std::path::{Path, PathBuf};
+use std::path::{PathBuf};
 use std::fs::{self, DirEntry};
-use std::ffi::OsStr;
 
-use crate::entry::Entry;
+use crate::entry;
 
 
 pub fn ls(path: &PathBuf) {
     if path.is_dir() {
         let contents = fs::read_dir(path).unwrap();
         for e in contents {
-            let entry = Entry::new(e.unwrap()).unwrap();
-            entry.print();
-            // println!("{:?}, {:?}", entry.metadata().unwrap(), entry.file_name());
+            entry::print(e.unwrap());
         }
     } else {
         println!("Not a directory!");

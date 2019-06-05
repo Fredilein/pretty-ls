@@ -1,40 +1,25 @@
-use std::path::{Path, PathBuf};
-use std::fs::{self, DirEntry};
+use std::path::Path;
+use std::fs::DirEntry;
 use std::ffi::OsStr;
 
 
-#[derive(Debug)]
-pub struct Entry {
-    name: &str,
-    symbol: char,
-    len: u64,
+pub fn print(entry: DirEntry) {
+    let file_name = entry.file_name();
+    let name = file_name.to_str().unwrap();
+    let metadata = entry.metadata().unwrap();
+    let symbol;
+    if metadata.is_dir() {
+        symbol = get_dir_symbol(name);
+    } else if metadata.is_file() {
+        symbol = get_file_symbol(name);
+    } else {
+        symbol = "\u{f15b}".chars().next().unwrap();
+    }
+    let len = metadata.len();
+
+    println!("{}  {}", symbol, name);
 }
 
-impl Entry {
-    pub fn new(entry: DirEntry) -> Result<Entry, &'static String> {
-        let name = entry.file_name().to_str().unwrap();
-        let metadata = entry.metadata().unwrap();
-        let symbol;
-        if metadata.is_dir() {
-            symbol = get_dir_symbol(name);
-        } else if metadata.is_file() {
-            symbol = get_file_symbol(name);
-        } else {
-            symbol = "\u{f15b}".chars().next().unwrap();
-        }
-        let len = metadata.len();
-
-        Ok(Entry {
-            name,
-            symbol,
-            len
-        })
-    }
-    
-    pub fn print(&self) {
-        println!("{}  {}", self.symbol, self.name);
-    }
-}
 
 fn get_dir_symbol(file_name: &str) -> char {
     let sym = match file_name {
