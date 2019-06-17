@@ -12,7 +12,7 @@ The ls command with a prettier output.
 - [ ] Git status
 
 ## Benchmark
-Executed for a small folder built with the `--release` option.
+Executed for a small folder built with the `--release` option. Measured with `time`.
 ```
 | program | total CPU time |
 | ------- | -------------- |
