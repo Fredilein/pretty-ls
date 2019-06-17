@@ -2,12 +2,12 @@ use std::path::Path;
 use std::fs::{DirEntry, ReadDir};
 use std::ffi::OsStr;
 
-#[derive(Debug)]
-pub struct Entry {
-    name: String,
-    symbol: char,
-    len: u64,
-}
+// #[derive(Debug)]
+// pub struct Entry {
+//     name: String,
+//     symbol: char,
+//     len: u64,
+// }
 
 fn print(entry: DirEntry) {
     let file_name = entry.file_name();
@@ -22,7 +22,7 @@ fn print(entry: DirEntry) {
         symbol = "\u{f15b}".chars().next().unwrap();
     }
 
-    let len = metadata.len();
+    // let len = metadata.len();
 
     println!("{}  {}", symbol, name);
 }
