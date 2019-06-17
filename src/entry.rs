@@ -1,9 +1,15 @@
 use std::path::Path;
-use std::fs::DirEntry;
+use std::fs::{DirEntry, ReadDir};
 use std::ffi::OsStr;
 
+#[derive(Debug)]
+pub struct Entry {
+    name: String,
+    symbol: char,
+    len: u64,
+}
 
-pub fn print(entry: DirEntry) {
+fn print(entry: DirEntry) {
     let file_name = entry.file_name();
     let name = file_name.to_str().unwrap();
     let metadata = entry.metadata().unwrap();
@@ -15,9 +21,16 @@ pub fn print(entry: DirEntry) {
     } else {
         symbol = "\u{f15b}".chars().next().unwrap();
     }
+
     let len = metadata.len();
 
     println!("{}  {}", symbol, name);
+}
+
+pub fn print_all(contents: ReadDir) {
+    for e in contents {
+        print(e.unwrap());
+    }
 }
 
 
