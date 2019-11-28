@@ -2,6 +2,7 @@
 
 The ls command with a prettier output.
 
+
 ## Goals
 
 - [x] Add filetype specific sybols
@@ -11,8 +12,10 @@ The ls command with a prettier output.
   - [ ] dates, privileges
 - [ ] Git status
 
+
 ## Benchmark
-Executed for a small folder built with the `--release` option. Measured with `time`.
+
+Executed for a small folder. Compiled with the `--release` option. Measured with `time`.
 ```
 | program | total CPU time |
 | ------- | -------------- |
