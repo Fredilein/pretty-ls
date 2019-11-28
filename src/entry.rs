@@ -2,6 +2,8 @@ use std::path::Path;
 use std::fs::{self, DirEntry, ReadDir};
 use std::ffi::OsStr;
 
+use colored::*;
+
 // #[derive(Debug)]
 // pub struct Entry {
 //     name: String,
@@ -13,18 +15,21 @@ fn print(entry: DirEntry) {
     let file_name = entry.file_name();
     let name = file_name.to_str().unwrap();
     let metadata = entry.metadata().unwrap();
-    let symbol;
+    let mut b = [0; 3];     // Buffer to encode symbol (for formatting)
+
     if metadata.is_dir() {
-        symbol = get_dir_symbol(name);
-        println!("{}  {}", symbol, name);
+        let symbol = get_dir_symbol(name).encode_utf8(&mut b);
+        println!(" {}  {}", symbol.yellow(), name.bold().yellow());
     } else if metadata.is_file() {
-        symbol = get_file_symbol(name);
-        println!("{}  {}", symbol, name);
+        let symbol = get_file_symbol(name);
+        println!(" {}  {}", symbol, name);
     } else {
-        symbol = "\u{f15b}".chars().next().unwrap();
+        let symbol = "\u{f0c1}".chars().next().unwrap();
         let path =  fs::read_link(entry.path()).unwrap();
-        println!("{}  {}", symbol, name);
-        println!("   \u{fb0c} {}", path.to_str().unwrap());
+        println!(" {}  {}", symbol, name);
+        // println!("    \u{fb0c} {}", path.to_str().unwrap());
+        let p = "\u{fb0c} ".to_owned() + path.to_str().unwrap();
+        println!("    {}", p.blue());
     }
 
     // let len = metadata.len();
