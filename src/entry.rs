@@ -1,5 +1,5 @@
 use std::path::Path;
-use std::fs::{DirEntry, ReadDir};
+use std::fs::{self, DirEntry, ReadDir};
 use std::ffi::OsStr;
 
 // #[derive(Debug)]
@@ -28,9 +28,16 @@ fn print(entry: DirEntry) {
 }
 
 pub fn print_all(contents: ReadDir) {
-    for e in contents {
-        print(e.unwrap());
+    let mut entries: Vec<_> = contents.map(|r| r.unwrap()).collect();
+    entries.sort_by_key(|dir| dir.path());
+
+    for e in entries {
+        print(e)
     }
+
+    // for e in contents {
+    //     print(e.unwrap());
+    // }
 }
 
 
