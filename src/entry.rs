@@ -16,15 +16,20 @@ fn print(entry: DirEntry) {
     let symbol;
     if metadata.is_dir() {
         symbol = get_dir_symbol(name);
+        println!("{}  {}", symbol, name);
     } else if metadata.is_file() {
         symbol = get_file_symbol(name);
+        println!("{}  {}", symbol, name);
     } else {
         symbol = "\u{f15b}".chars().next().unwrap();
+        let path =  fs::read_link(entry.path()).unwrap();
+        println!("{}  {}", symbol, name);
+        println!("   \u{fb0c} {}", path.to_str().unwrap());
     }
 
     // let len = metadata.len();
 
-    println!("{}  {}", symbol, name);
+
 }
 
 pub fn print_all(contents: ReadDir) {
@@ -34,10 +39,6 @@ pub fn print_all(contents: ReadDir) {
     for e in entries {
         print(e)
     }
-
-    // for e in contents {
-    //     print(e.unwrap());
-    // }
 }
 
 
