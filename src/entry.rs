@@ -3,13 +3,8 @@ use std::fs::{self, DirEntry, ReadDir};
 use std::ffi::OsStr;
 
 use colored::*;
+use pretty_bytes::converter::convert;
 
-// #[derive(Debug)]
-// pub struct Entry {
-//     name: String,
-//     symbol: char,
-//     len: u64,
-// }
 
 fn print(entry: DirEntry) {
     let file_name = entry.file_name();
@@ -17,23 +12,24 @@ fn print(entry: DirEntry) {
     let metadata = entry.metadata().unwrap();
     let mut b = [0; 3];     // Buffer to encode symbol (for formatting)
 
+    print!("{l:>w$} ", l=convert(metadata.len() as f64), w=9);
+
     if metadata.is_dir() {
         let symbol = get_dir_symbol(name).encode_utf8(&mut b);
-        println!(" {}  {}", symbol.yellow(), name.bold().yellow());
-    } else if metadata.is_file() {
+        print!(" {}  {}\n", symbol.yellow(), name.bold().yellow());
+    } 
+    else if metadata.is_file() {
         let symbol = get_file_symbol(name);
-        println!(" {}  {}", symbol, name);
-    } else {
+        print!(" {}  {}\n", symbol, name);
+    } 
+    else {
         let symbol = "\u{f0c1}".chars().next().unwrap();
         let path =  fs::read_link(entry.path()).unwrap();
-        println!(" {}  {}", symbol, name);
+        print!(" {}  {}\n", symbol, name);
         // println!("    \u{fb0c} {}", path.to_str().unwrap());
         let p = "\u{fb0c} ".to_owned() + path.to_str().unwrap();
-        println!("    {}", p.blue());
+        println!("          {}", p.blue());
     }
-
-    // let len = metadata.len();
-
 
 }
 
@@ -127,6 +123,7 @@ fn get_file_symbol(file_name: &str) -> char {
       "txt"       => "\u{f15c}",
       "video"     => "\u{f03d}",
       "vim"       => "\u{e62b}",
+      "vimrc"       => "\u{e62b}",
       "windows"   => "\u{f17a}",
       "xls"       => "\u{f1c3}",
       "xml"       => "\u{e619}",
